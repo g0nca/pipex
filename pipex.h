@@ -19,22 +19,28 @@
 # include <sys/wait.h>
 
 int     main(int ac, char **av, char **env);
-int     no_file(char **av);
-char    *ft_getenv(char **env);
-void    exit_error(int n);
+void	parent(char **av, int *p_fd, char **env);
+void	child(char **av, int *p_fd, char **env);
+void	exec(char *cmd, char **env);
 
-char *get_path(char *cmd, char *path);
+void	exit_handler(int n_exit);
+int	open_file(char *file, int in_or_out);
+void	ft_free_tab(char **tab);
+char	*my_getenv(char *name, char **env);
+char	*get_path(char *cmd, char **env);
 
-char    *ft_getenv_function(char *cmd, char **path);
+
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlen(const char *s);
 void	ft_putstr_fd(char *s, int fd);
-
+void	ft_putendl_fd(char *s, int fd);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+int	ft_strcmp(char *s1, char *s2);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	**ft_split(char const *s, char c);
 void	*free_array(char **array);
 char	*if_null(char **array, int a);
 char	*save_words(const char *s, char c);
-int	count_words(char const *str, char c);
-void    ft_free(char **delete);
+int     count_words(char const *str, char c);
+
 #endif
