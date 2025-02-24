@@ -201,4 +201,26 @@ ls -la /proc/$$/fd
                            -----------------
                  6         |     end[1]    |  
                            -----------------
+```
+🚀 ###Conclusão
 
+O projeto PIPEX foi uma excelente oportunidade de entender a fundo o funcionamento de pipes, processos e redirecionamento de entrada e saída em sistemas Unix-like. Com este projeto, recriei o comportamento do operador de pipeline (|) do shell, permitindo que a saída de um comando fosse conectada à entrada de outro, similar ao comando:
+```
+< file1 cmd1 | cmd2 > file2
+```
+O que foi aprendido:
+
+    🛠️ Manipulação de pipes para comunicação entre processos.
+    🧠 Como utilizar fork() para criar processos filhos e execve() para executar comandos.
+    🔄 Redirecionamento de entrada e saída com dup2().
+    🔍 Como buscar os comandos no sistema utilizando as variáveis de ambiente.
+
+Esse projeto solidificou meu entendimento sobre processos e pipes em C, e me proporcionou uma base sólida para avançar em outras implementações mais complexas de sistemas em C. 💻
+
+A aplicação do conceito de execve() também me permitiu melhorar a manipulação de comandos e entender a importância da estrutura de arquivos e do gerenciamento de processos.
+
+Foi um desafio incrível que me ensinou muito sobre como os sistemas operacionais lidam com comunicação entre processos! 🔥
+
+Agora, posso aplicar esse conhecimento em projetos mais avançados e entender melhor como programas de sistemas operacionais funcionam no dia a dia! 🚀
+
+Pronto! Você pode copiar isso diretamente para a seção de conclusão do seu GitHub. Se precisar de mais algum ajuste, é só avisar!
