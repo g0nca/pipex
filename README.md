@@ -145,6 +145,13 @@ pipe()
   - Closes the write end of the pipe.
   - Executes `cmd2` with **`execve()`**.
 
+### 📌 Understanding `pipe()`
+- `pipe()` takes an array of two integers and links them together.
+- What is done in `end[0]` is visible to `end[1]`, and vice versa.
+- `pipe()` assigns a **file descriptor (fd)** to each end.
+- File descriptors allow files to be read and written to. Since each end gets an fd, they can communicate.
+- `end[1]` writes to its own fd, and `end[0]` reads from `end[1]`’s fd and writes to its own.
+
 This mechanism ensures that the output of the first command becomes the input of the second, effectively mimicking a shell pipeline (`cmd1 | cmd2`).
 
 ---
