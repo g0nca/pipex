@@ -145,34 +145,31 @@ pipe()
   - Closes the write end of the pipe.
   - Executes `cmd2` with **`execve()`**.
 
-### 📌 Understanding `pipe()`
-- `pipe()` takes an array of two integers and links them together.
-- What is done in `end[0]` is visible to `end[1]`, and vice versa.
-- `pipe()` assigns a **file descriptor (fd)** to each end.
-- File descriptors allow files to be read and written to. Since each end gets an fd, they can communicate.
-- `end[1]` writes to its own fd, and `end[0]` reads from `end[1]`’s fd and writes to its own.
+### 📌 Swapping FDs with `dup2()`
+For the child process:
+- `infile` becomes `stdin` (input)
+- `end[1]` becomes `stdout` (writes `cmd1` output to `end[1]`)
 
-### 📌 Code Example: Pipex Implementation
-```c
-void pipex(int f1, int f2)
-{
-    int   end[2];
-    pid_t parent;
-    
-    pipe(end);
-    parent = fork();
-    if (parent < 0)
-         return (perror("Fork: "));
-    if (!parent) // if fork() returns 0, we are in the child process
-        child_process(f1, cmd1);
-    else
-        parent_process(f2, cmd2);
-}
+For the parent process:
+- `end[0]` becomes `stdin` (reads `cmd1` output from `end[1]`)
+- `outfile` becomes `stdout` (writes `cmd2` output to `outfile`)
+
+#### 🔍 Visual Representation:
 ```
-
-### 📌 Understanding `fork()`
-- `fork()` splits the process into two subprocesses -> parallel, simultaneous, happen at the same time.
-- It returns `0` for the child process, a non-zero value for the parent process, and `-1` in case of an error.
+    infile                                             outfile
+as stdin for cmd1                                 as stdout for cmd2            
+       |                        PIPE                        ↑
+       |           |---------------------------|            |
+       ↓             |                       |              |
+      cmd1   -->    end[1]       ↔       end[0]   -->     cmd2           
+                     |                       |
+            cmd1   |---------------------------|  end[0]
+           output                             reads end[1]
+         is written                          and sends cmd1
+          to end[1]                          output to cmd2
+       (end[1] becomes                      (end[0] becomes 
+        cmd1 stdout)                           cmd2 stdin)
+```
 
 ### 📌 File Descriptors (FDs)
 - `end[1]` is the child process, `end[0]` is the parent process.
@@ -204,5 +201,4 @@ ls -la /proc/$$/fd
                            -----------------
                  6         |     end[1]    |  
                            -----------------
-```
 
