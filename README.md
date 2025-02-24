@@ -152,10 +152,57 @@ pipe()
 - File descriptors allow files to be read and written to. Since each end gets an fd, they can communicate.
 - `end[1]` writes to its own fd, and `end[0]` reads from `end[1]`’s fd and writes to its own.
 
-This mechanism ensures that the output of the first command becomes the input of the second, effectively mimicking a shell pipeline (`cmd1 | cmd2`).
+### 📌 Code Example: Pipex Implementation
+```c
+void pipex(int f1, int f2)
+{
+    int   end[2];
+    pid_t parent;
+    
+    pipe(end);
+    parent = fork();
+    if (parent < 0)
+         return (perror("Fork: "));
+    if (!parent) // if fork() returns 0, we are in the child process
+        child_process(f1, cmd1);
+    else
+        parent_process(f2, cmd2);
+}
+```
 
----
+### 📌 Understanding `fork()`
+- `fork()` splits the process into two subprocesses -> parallel, simultaneous, happen at the same time.
+- It returns `0` for the child process, a non-zero value for the parent process, and `-1` in case of an error.
 
-## 📢 Conclusion
-The **PIPEX** project is an excellent exercise for learning about **processes, pipes, and input/output redirection** in C. It is fundamental for gaining a deeper understanding of how the **shell** works internally. Good luck with your coding! 🚀
+### 📌 File Descriptors (FDs)
+- `end[1]` is the child process, `end[0]` is the parent process.
+- The child writes, and the parent reads.
+- Since for something to be read, it must be written first, `cmd1` is executed by the child, and `cmd2` by the parent.
+- `pipex` is run like this: `./pipex infile cmd1 cmd2 outfile`.
+- FDs `0`, `1`, and `2` are by default assigned to stdin, stdout, and stderr.
+- `infile`, `outfile`, the pipe, stdin, and stdout are all FDs.
+
+#### 🔍 Checking Open File Descriptors on Linux
+```sh
+ls -la /proc/$$/fd
+```
+
+### 📌 FD Table Representation
+```
+                           -----------------    
+                 0         |     stdin     |  
+                           -----------------    
+                 1         |     stdout    |    
+                           -----------------    
+                 2         |     stderr    |  
+                           -----------------
+                 3         |     infile    |  // open()
+                           -----------------
+                 4         |     outfile   |  // open()
+                           -----------------
+                 5         |     end[0]    | 
+                           -----------------
+                 6         |     end[1]    |  
+                           -----------------
+```
 
