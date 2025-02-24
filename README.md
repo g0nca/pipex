@@ -13,26 +13,6 @@ Create a C program that executes:
 ```sh
 ./pipex file1 "cmd1" "cmd2" file2
 ```
-```
-# ./pipex infile cmd1 cmd2 outfile
-pipe()
- |
- |-- fork()
-      |
-      |-- child // cmd1
-      :     |--dup2()
-      :     |--close end[0]
-      :     |--execve(cmd1)
-      :
-      |-- parent // cmd2
-            |--dup2()
-            |--close end[1]
-            |--execve(cmd2)
- 
-# pipe() sends the output of the first execve() as input to the second execve()
-# fork() runs two processes (i.e. two commands) in one single program
-# dup2() swaps our files with stdin and stdout
-```
 
 This should replicate the following shell command:
 
@@ -131,6 +111,41 @@ if (pid == -1) {
     perror("waitpid failed");
 }
 ```
+
+---
+
+## 🔍 PIPEX Execution Flow
+
+```sh
+# ./pipex infile cmd1 cmd2 outfile
+pipe()
+ |
+ |-- fork()
+      |
+      |-- child // cmd1
+      :     |--dup2()
+      :     |--close end[0]
+      :     |--execve(cmd1)
+      :
+      |-- parent // cmd2
+            |--dup2()
+            |--close end[1]
+            |--execve(cmd2)
+```
+
+### Explanation:
+- **`pipe()`** creates a communication channel, allowing data to be transferred from one process to another.
+- **`fork()`** generates a new child process, so we can run two commands within a single program.
+- **Child Process:**
+  - Uses **`dup2()`** to redirect input/output.
+  - Closes the read end of the pipe.
+  - Executes `cmd1` with **`execve()`**.
+- **Parent Process:**
+  - Uses **`dup2()`** to set up input/output redirection.
+  - Closes the write end of the pipe.
+  - Executes `cmd2` with **`execve()`**.
+
+This mechanism ensures that the output of the first command becomes the input of the second, effectively mimicking a shell pipeline (`cmd1 | cmd2`).
 
 ---
 
