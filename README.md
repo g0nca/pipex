@@ -202,22 +202,25 @@ ls -la /proc/$$/fd
                  6         |     end[1]    |  
                            -----------------
 ```
-🚀 ###Conclusão
+## 🚀 Conclusion
 
-O projeto PIPEX foi uma excelente oportunidade de entender a fundo o funcionamento de pipes, processos e redirecionamento de entrada e saída em sistemas Unix-like. Com este projeto, recriei o comportamento do operador de pipeline (|) do shell, permitindo que a saída de um comando fosse conectada à entrada de outro, similar ao comando:
-```
-< file1 cmd1 | cmd2 > file2
-```
-O que foi aprendido:
+The **PIPEX** project was an excellent opportunity to dive deep into how pipes, processes, and input/output redirection work in Unix-like systems. With this project, I replicated the behavior of the shell pipeline operator (`|`), allowing the output of one command to be connected to the input of another, similar to the following shell command:
 
-    🛠️ Manipulação de pipes para comunicação entre processos.
-    🧠 Como utilizar fork() para criar processos filhos e execve() para executar comandos.
-    🔄 Redirecionamento de entrada e saída com dup2().
-    🔍 Como buscar os comandos no sistema utilizando as variáveis de ambiente.
+```sh
+What I learned:
 
-Esse projeto solidificou meu entendimento sobre processos e pipes em C, e me proporcionou uma base sólida para avançar em outras implementações mais complexas de sistemas em C. 💻
+    🛠️ Manipulating pipes for inter-process communication.
+    🧠 Using fork() to create child processes and execve() to execute commands.
+    🔄 Redirecting input and output with dup2().
+    🔍 Finding commands on the system using environment variables.
 
-A aplicação do conceito de execve() também me permitiu melhorar a manipulação de comandos e entender a importância da estrutura de arquivos e do gerenciamento de processos.
+This project solidified my understanding of processes and pipes in C, providing me with a strong foundation to work on more complex system-level implementations in C. 💻
+
+The application of execve() also helped me improve command handling and better understand the importance of file structures and process management.
+
+It was an incredible challenge that taught me a lot about how operating systems handle inter-process communication! 🔥
+
+Now, I can apply this knowledge to more advanced projects and gain a better understanding of how operating system programs work day-to-day! 🚀
 
 Foi um desafio incrível que me ensinou muito sobre como os sistemas operacionais lidam com comunicação entre processos! 🔥
 
