@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 12:28:15 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/02/12 12:06:12 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/02/25 12:08:48 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ int	count_words(char const *str, char c)
 		{
 			counter++;
 			while (str[i] != c && str[i] != '\0')
-			{
 				i++;
-			}
 		}
 		else
 			i++;

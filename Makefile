@@ -6,16 +6,17 @@
 #    By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/13 13:11:58 by ggomes-v          #+#    #+#              #
-#    Updated: 2025/02/11 14:31:04 by ggomes-v         ###   ########.fr        #
+#    Updated: 2025/02/25 12:02:28 by ggomes-v         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Wall -Werror -Wextra
 MAKEFILES := $(wildcard */Makefile)  # Encontra os Makefiles nos subdiretórios
-SRCS = pipex.c utils.c
+SRCS = pipex.c utils.c utils2.c
 LIBFTPRINTF = ft_printf/libftprintf.a  # Caminho para a biblioteca ft_printf
 LIBFT = libft/libft.a
+ASAN = -fsanitize=leak,address,undefined -fno-omit-frame-pointer -g
 
 NAME = pipex
 RM = rm -rf 
@@ -29,6 +30,8 @@ $(NAME): $(OBJS) $(LIBFTPRINTF) $(LIBFT) # Agora linkamos a biblioteca ft_printf
 	@echo "	║ ✅ |${GREEN}All Files Compiled${RESET}     ║"
 	@echo "	╚═════════════════════════════════════╝"
 
+asan : fclean $(NAME) $(LIBFTPRINTF) $(LIBFT)
+	@${CC} ${ASAN} ${CFLAGS} ${OBJS} $(LIBFTPRINTF) $(LIBFT) -o ${NAME}
 # Compilar os arquivos .c
 %.o: %.c
 	@echo "${GREEN}${BOLD}✅ | Compiling $<...${RESET}"

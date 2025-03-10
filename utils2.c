@@ -1,28 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   utils2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ggomes-v <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/25 10:11:58 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/02/25 10:12:04 by ggomes-v         ###   ########.fr       */
+/*   Created: 2025/02/25 12:01:23 by ggomes-v          #+#    #+#             */
+/*   Updated: 2025/02/25 12:16:20 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "libft.h"
+#include "pipex.h"
 
-int	ft_strcmp(char *s1, char *s2)
+void	*ft_free(void *ptr)
 {
-	size_t	i;
-
-	i = 0;
-	if (!s1)
-		return (1);
-	while (s1[i] || s2[i])
+	if (ptr)
 	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
+		free(ptr);
+		ptr = NULL;
 	}
-	return (0);
+	return (NULL);
+}
+
+char	**ft_split_check(char const *str, char c)
+{
+	if (!str)
+		return (NULL);
+	return (ft_split(str, c));
 }

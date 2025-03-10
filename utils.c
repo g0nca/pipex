@@ -6,7 +6,7 @@
 /*   By: ggomes-v <ggomes-v@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:04:20 by ggomes-v          #+#    #+#             */
-/*   Updated: 2025/02/13 11:39:50 by ggomes-v         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:25:11 by ggomes-v         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,20 @@ void	exit_handler(int n_exit)
 	exit(0);
 }
 
+//O_TRUNC delete the content of file
 int	open_file(char *file, int in_or_out)
 {
 	int	ret;
 
 	if (in_or_out == 0)
-		ret = open(file, O_RDONLY, 0777);
+		ret = open(file, O_RDONLY, 0644);
 	if (in_or_out == 1)
-		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		ret = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (ret == -1)
+	{
+		perror(file);
 		exit(0);
+	}
 	return (ret);
 }
 
@@ -37,13 +41,19 @@ void	ft_free_tab(char **tab)
 	size_t	i;
 
 	i = 0;
+	if (!tab)
+		return ;
 	while (tab[i])
 	{
 		free(tab[i]);
+		tab[i] = NULL;
 		i++;
 	}
-	free(tab);
+	tab = ft_free(tab);
+	tab = NULL;
 }
+//Search for the environment variable that is passed as a parameter.
+//Returns the position following the environment variable name + ' = '
 
 char	*my_getenv(char *name, char **env)
 {
@@ -78,9 +88,9 @@ char	*get_path(char *cmd, char **env)
 	char	**s_cmd;
 
 	i = -1;
-	allpath = ft_split(my_getenv("PATH", env), ':');
+	allpath = ft_split_check(my_getenv("PATH", env), ':');
 	s_cmd = ft_split(cmd, ' ');
-	while (allpath[++i])
+	while (allpath && allpath[++i])
 	{
 		path_part = ft_strjoin(allpath[i], "/");
 		exec = ft_strjoin(path_part, s_cmd[0]);
